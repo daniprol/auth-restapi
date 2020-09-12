@@ -40,3 +40,15 @@ Ahora podemos usar ES6 sin problemas, porque gracias a Babel cualquier entorno a
 * Crear **entorno de producción**: usamos script `"build": "babel src --out-dir build"` 
 
 * Ejecutar **entorno de produccion**: usamos script `"start": 'node build/index.js'`
+
+## Express
+
+Devolver respuesta a una petición en formato json:
+
+```js
+(req, res) => {
+    res.sendStatus(500).json('Respuesta');
+    // .json y .send envían un código 200 por defecto, así que darán un error si lo explicitas!
+}
+```
+
