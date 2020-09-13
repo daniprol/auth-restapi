@@ -52,6 +52,14 @@ Ahora podemos usar ES6 sin problemas, porque gracias a Babel cualquier entorno a
 }
 ```
 
+* Por defecto, Express no viene preparado para recibir datos en formato JSON. Tenemos que usar un middleware para ello:
+
+```js
+app.use(express.json())
+```
+
+​	Ahora cada vez que hagamos una petición de tipo POST con cabeceras `"Content-type": "application/json"` ya podemos leer lo que pone, tan solo usando `req.body`
+
 * Guardar una variable en  express: esto permite poder usarlo en cualquier otro endpoint de la aplicación sin tener que volver a importar archivos, etc...
 
 ```js
@@ -74,3 +82,38 @@ import productRoutes from "./routes/products.routes";
 app.use('/products', productRoutes)
 ```
 
+## MongoDB
+
+Para comprobar si el servicio de MongoDb se encuentra en ejecución usar:
+
+```shell
+sudo systemctl status mongod
+```
+
+Para poner en marcha/parar el servicio, usar:
+
+```shell
+sudo systemctl start mongod
+sudo systemctl stop mongod
+```
+
+Para que MongoDB se inicie a la vez que el equipo usar:
+
+```shell
+sudo systemctl enable mongod
+```
+
+* Schema: definición del esquema del modelo.
+  * timestamps: `true` así cada vez que se cree un nuevo dato se guardará la fecha de creación también. Esto se guarda en los campos `createdAt`  y  `updatedAt` .
+  * versionKey: para que no ponga la barra abajo `_v`
+* Model: forma de interactuar con la base de datos
+
+## Postman
+
+* Peticiones HTTP de tipo POST:
+
+  ```
+  "Content-type": "application/json"
+  ```
+
+  
