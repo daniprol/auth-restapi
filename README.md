@@ -108,6 +108,18 @@ sudo systemctl enable mongod
   * versionKey: para que no ponga la barra abajo `_v`
 * Model: forma de interactuar con la base de datos
 
+## Mongoose
+
+* Para actualizar datos de un documento:
+
+```js
+  const updatedProduct = await Product.findByIdAndUpdate(productId, newProduct, {
+    new: true   // Esto hace que se devuelva el producto actualizado y no el original!!
+  });
+```
+
+
+
 ## Postman
 
 * Peticiones HTTP de tipo POST:

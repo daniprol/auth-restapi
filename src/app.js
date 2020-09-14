@@ -3,7 +3,6 @@ import morgan from "morgan";
 import pkg from "../package.json";
 // Importamos rutas
 import productRoutes from "./routes/products.routes";
-// Importamos db para que se inicialice también
 
 const app = express();
 
