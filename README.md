@@ -82,6 +82,8 @@ import productRoutes from "./routes/products.routes";
 app.use('/products', productRoutes)
 ```
 
+**IMPORTANTE:** la ruta tiene que empezar por `/`
+
 ## MongoDB
 
 Para comprobar si el servicio de MongoDb se encuentra en ejecución usar:
@@ -118,7 +120,21 @@ sudo systemctl enable mongod
   });
 ```
 
+* Como relacionar el campo de un *schema* con otro modelo de la misma base de datos.
 
+  ```js
+     roles: [
+        {
+          ref: "Role", // El nombre del modelo al que hacemos referencia
+          type: Schema.Types.ObjectId, // El tipo va a a ser un _id de mongodb
+        },
+      ],
+  
+  ```
+
+* Si solo quieren enviar un status para la petición HTTP: `res.sendStatus(200)`.
+
+* En el caso de que queramos enviar el status a la vez que una respuesta en json: `res.status(200).json('mensaje en json')` 
 
 ## Postman
 
@@ -129,3 +145,6 @@ sudo systemctl enable mongod
   ```
 
   
+
+## Identificación (authentication)
+
