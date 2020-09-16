@@ -110,6 +110,17 @@ sudo systemctl enable mongod
   * versionKey: para que no ponga la barra abajo `_v`
 * Model: forma de interactuar con la base de datos
 
+Para comprobar los roles que hay en la base de datos:
+
+```shell
+show dbs
+use companydb
+show collections
+db.roles.find()
+```
+
+
+
 ## Mongoose
 
 * Para actualizar datos de un documento:
@@ -147,4 +158,40 @@ sudo systemctl enable mongod
   
 
 ## Identificación (authentication)
+
+* Cuando creamos un nuevo usuario no podemos guardar la contraseña de forma directa sino que tenemos que cifrarla antes.
+
+  Para ello creamos un método estático en el modelo de usuario: 
+
+  ```js
+  userSchema.statics.encryptPassword = async (password) => {
+    // Generamos el algoritmo
+    const salt = await bcrypt.genSalt(10);
+    // Retornamos la contraseña cifrada
+    return await bcrypt.hash(password, salt);
+  };
+  ```
+
+  Después podemos crear ya el nuevo usuario cifrando la contraseña directamente sin guardarla en ningún lado:
+
+  ```js
+  const newUser = new User({
+      username,
+      email,
+      password: await User.encryptPassword(password),
+      roles,
+    });
+  
+  const savedUser = await newUser.save();
+  ```
+
+  Una vez creado el usuario no devolvemos el objeto guardado sino un token con el id:
+
+  ```js
+    const token = jwt.sign({ id: savedUser._id }, config.SECRET, {
+      expiresIn: 86400, // 24 hours
+    });
+  ```
+
+  
 
