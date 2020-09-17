@@ -147,6 +147,18 @@ db.roles.find()
 
 * En el caso de que queramos enviar el status a la vez que una respuesta en json: `res.status(200).json('mensaje en json')` 
 
+* Devolver el valor de un campo en vez del id asociado:
+
+  Usamos la opción **populate("nombre_del_campo")** para que en vez de devolver el `_id` correspondiente, te devuelvan el objeto entero.
+
+  ```js
+    const userFound = await User.findOne({
+      email: req.body.email,
+    }).populate("roles");
+  ```
+
+  
+
 ## Postman
 
 * Peticiones HTTP de tipo POST:

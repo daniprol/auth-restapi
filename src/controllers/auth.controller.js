@@ -36,5 +36,27 @@ export const signUp = async (req, res) => {
 };
 
 export const signIn = async (req, res) => {
-  res.json("signin");
+  // res.json("signin");
+  const userFound = await User.findOne({
+    email: req.body.email,
+  }).populate("roles");
+
+  if (!userFound) return res.status(400).json({ message: "User not found" });
+  if (userFound && !req.body.password)
+    return res.status(400).json({ message: "You must specify a password!" });
+  // Si se encuentra un usuario:
+  const matchPassword = await User.comparePassword(
+    req.body.password, // Primero ponemos  ingresada por el usuario
+    userFound.password // Ahora la contraseña almacenada en la base de datos
+  );
+
+  if (!matchPassword) {
+    return res.status(401).json({ token: null, message: "Invalid password" });
+  }
+  console.log(userFound._id);
+  // Vamos a devolver la información del usuario pero firmada:
+  const token = jwt.sign({ id: userFound._id }, config.SECRET, {
+    expiresIn: 86400,
+  });
+  res.json({ token });
 };
