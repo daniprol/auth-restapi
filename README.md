@@ -24,6 +24,25 @@
   import { verifyToken } from '../middlewares'
   ```
 
+* Importar muchas funciones de un archivo:
+
+  ```js
+  import * as authJwt from "./authJwt";
+  
+  export { authJwt };
+  ```
+
+  Para hacer uso de ellas solo tenemos que:
+
+  ```js
+  import { authJwt } from "../middlewares";
+  
+  authJwt.verifyToken() import { authJwt } from "../middlewares";
+  
+  ```
+
+  
+
 * Añadir una cabecera (*headers*) en una petición HTTP: `req.userId = decodedToken.id` 
 
 ### Usar Babel
@@ -93,6 +112,8 @@ app.use('/products', productRoutes)
 ```
 
 **IMPORTANTE:** la ruta tiene que empezar por `/`
+
+* **NOTA:** en los middlewares de Express, es recomendable acabar con un `return next()` , pues en caso de no poner `return` corremos el peligro de que el middleware se siga ejecutando y nunca se pase al siguiente.!
 
 ## MongoDB
 
@@ -238,6 +259,27 @@ db.roles.find()
   ```js
     const decoded = jwt.verify(token, config.SECRET); // No deberíamos usar aquí un await?????
     console.log(decoded);
+  ```
+
+  
+
+* **Identificación con roles de usuario:**
+
+  A la hora de definir las rutas, podemos llamar a varios middlewares seguidos:
+
+  ```js
+  router.post(
+    "/",
+    [authJwt.verifyToken, authJwt.isModerator],
+    productsCtrl.createProduct
+  ); 
+  ```
+
+  Para poder acceder al `_id` de usuario en el método `isModerator` podemos almacenarlo en un header cuando ejecutamos la función `.verifyToken`:
+
+  ```js
+      // Guardamos la identidad del token en los headers de la petición
+      req.userId = decoded.id;
   ```
 
   
