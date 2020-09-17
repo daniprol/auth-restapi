@@ -42,15 +42,22 @@
 					"name": "http://localhost:3000/products",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNjI4ZmNkNzQxZjY5N2Y2MzU0NTJiMCIsImlhdCI6MTYwMDM1OTk1MywiZXhwIjoxNjAwNDQ2MzUzfQ.gMAR4xJ1FC79cxpydlTbbtKHd5eXByMDdGVe-bZRY6k",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "http://localhost:3000/products",
+							"raw": "http://localhost:3000/api/products",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"api",
 								"products"
 							]
 						}
@@ -173,7 +180,17 @@
 					"name": "http://localhost:3000/api/auth/signin",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"king@hotmail.com\",\n    \"password\": \"password\"\n}"
+						},
 						"url": {
 							"raw": "http://localhost:3000/api/auth/signin",
 							"protocol": "http",

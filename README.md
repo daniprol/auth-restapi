@@ -16,6 +16,16 @@
    npm i -d  @babel/core @babel/cli @babel/node @babel/preset-env nodemon
    ```
 
+## TRICKS:
+
+* Si queremos importar el archivo `../middlewares/index.js` de una carpeta específica solo tenemos que importar la carpeta:
+
+  ```js
+  import { verifyToken } from '../middlewares'
+  ```
+
+* Añadir una cabecera (*headers*) en una petición HTTP: `req.userId = decodedToken.id` 
+
 ### Usar Babel
 
 Añadir en `package.json` el script:
@@ -157,6 +167,12 @@ db.roles.find()
     }).populate("roles");
   ```
 
+* Si no queremos que se devuelva un campo del documento cuando lo busquemos en la base de datos usamos `{ password: 0 }`:
+
+  ```js
+    const user = await User.findById(req.userId, { password: 0 }); // password: 0 para que no nos devuelva la contraseña!
+  ```
+
   
 
 ## Postman
@@ -207,3 +223,21 @@ db.roles.find()
 
   
 
+* **Identificación con JWT:** 
+
+  Lo primero que tenemos que hacer es crear un *middleware* que extraiga el token de los headers de la petición http (en concreto de `x-access-token`) 
+
+   ```js
+  const token = req.headers['x-access-token']
+   ```
+
+  
+
+  Después tenemos que comprobar que la firma es válida:
+
+  ```js
+    const decoded = jwt.verify(token, config.SECRET); // No deberíamos usar aquí un await?????
+    console.log(decoded);
+  ```
+
+  
