@@ -1,5 +1,16 @@
 ## REST API con identificación, autorización y roles
 
+## RESTful APIs
+
+Diseñadas para transferir datos entre dispositivos, sin importar de que plataforma se encuentra al otro lado (móbil, navegador, SPA, AJAX, ...) .
+
+* **Información devuelta:**  no tiene por qué ser solo en formato JSON. También puede ser XML, URLencoded, Formdata... Normalmente <u>no</u> se devuelve HTML, eso sí.
+* **Restricciones:**
+  * Arquitectura del cliente-servidor: a la API no le importa el UI de la plataforma haciendo la petición.
+  * Stateless: no se almacena ningún tipo de contexto del cliente en el servidor (por ej, sesiones).
+  * Posibilidad de usar cachés: debe ser definida por la respuesta devuelta por el servidor. Se pueden usar cachés dependiendo del tipo de datos que se solicitan y el periodo de actualización de los mismos.
+  * Sistema con diferentes capas (layers): la API no tiene que ser el punto final de la petición sino que puede ser un punto intermedio de la misma, i.e., API conectada con otra API.
+
 ### Librerías usadas:
 
 1. Express
@@ -113,7 +124,38 @@ app.use('/products', productRoutes)
 
 **IMPORTANTE:** la ruta tiene que empezar por `/`
 
-* **NOTA:** en los middlewares de Express, es recomendable acabar con un `return next()` , pues en caso de no poner `return` corremos el peligro de que el middleware se siga ejecutando y nunca se pase al siguiente.!
+* **NOTA:** en los middlewares de Express, es recomendable acabar con un `return next()` , pues en caso de no poner `return` corremos el peligro de que el middleware se siga ejecutando y nunca se pase al siguiente!
+
+  **EJEMPLO CATASTRÓFICO:**
+
+  ```js
+  app.use((req, res, next) => {
+    console.log('This is a middleware')
+    next()
+    console.log('This is first-half middleware')
+  })
+  
+  app.use((req, res, next) => {
+    console.log('This is second middleware')
+    next()
+  })
+  
+  app.use((req, res, next) => {
+    console.log('This is third middleware')
+    next()
+  })
+  ```
+
+  Cuando se ejecuta tendremos:
+
+  ```shell
+  This is a middleware
+  This is second middleware
+  This is third middleware
+  This is first-half middleware
+  ```
+
+  
 
 ## MongoDB
 
